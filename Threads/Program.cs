@@ -1,11 +1,18 @@
-﻿int n = 2, m = 2;
+﻿int n = 4, m = 4;
 int[,] A = create(n, m);
 int[,] B = create(n, m);
 
 show(A);
 show(B);
 
-int[,] C = multiply(A, B);
+int[,] C = new int[n,m];
+for (int x = 0; x < A.GetLength(0); x+=2)
+{
+    Thread t = new Thread(() => multiply(A, B, x));
+    t.Start();
+    Thread.Sleep(1000);
+}
+Thread.Sleep(1000);
 show(C);
 
 
@@ -16,12 +23,12 @@ show(C);
 }
 Console.WriteLine(x);*/
 
-int[,] multiply(int[,] A, int[,] B)
+int[,] multiply(int[,] A, int[,] B, int x)
 {
-    int[,] C = new int[A.GetLength(0), B.GetLength(1)];
-    for(int i = 0;i < A.GetLength(0); i++)
+    //int[,] C = new int[A.GetLength(0), B.GetLength(1)];
+    for(int i = x; i < x+2; i++)
         for(int j = 0;j < B.GetLength(1); j++)
-            for(int k = 0;k < A.GetLength(1); k++)
+            for(int k = 0; k < A.GetLength(1); k++)
                 C[i,j] += A[i,k] * B[k,j];
     return C;
 }
